@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#"><h1 id="logo"><b>daiko</b>wallet</h1></a>
+            <div id="center">
+                <a href="#"><h2>why us</h2></a>
+                <a href="#"><h2>learn more</h2></a>
+                <a href="#"><h2>contact</h2></a>
+            </div>
+            <div id="login">
+                <a href="{{url_for('login')}}"><h2>login</h2></a>
+                <a href="{{url_for('register')}}" id="join"><span>
+                    <h2 id="signup">sign up</h2></a>
+                </span>
+            </div>
+        </nav>
+    </header>
+    <section id="hero">
+        <div id="hero-display">
+            <div id="hero-text">
+                <h1>spend money the <b>right</b> way</h1>
+                <h3>set goals and build healthy spending habits with <b>daiko</b></h3>
+                <a id="join" href="{{url_for('register')}}">
+                    <span id="try"><h2>try it now!</h2></span>
+                </a>
+            </div>
+            
+
+            <section>
+                <img id="rectangle" src="{{ url_for('static', filename='images/mockup1.svg') }}">
+                <img id="gradient" src="{{ url_for('static', filename='images/gradient.png') }}">
+            </section>
+        </div>
+    </section>
+    <section id="about">
+
+    </section>
+    <script>
+        var object = document.getElementById('rectangle');
+
+        document.addEventListener('mousemove', moveObject);
+
+        function moveObject(event) {
+        var objectRect = object.getBoundingClientRect();
+        var objectCenterX = objectRect.left + objectRect.width / 2;
+        var objectCenterY = objectRect.top + objectRect.height / 2;
+        
+        var mouseX = event.clientX;
+        var mouseY = event.clientY;
+        
+        var distanceX = mouseX - objectCenterX;
+        var distanceY = mouseY - objectCenterY;
+        
+        var moveX = distanceX * 0.01; //adjust the movement speed as desired
+        var moveY = distanceY * 0.01;
+        
+        object.style.transform = 'translate(' + moveX + 'px, ' + moveY + 'px)';
+        }
+
+        var object1 = document.getElementById('gradient');
+        var object2 = document.getElementById('hero-text');
+
+        document.addEventListener('mousemove', moveObject1);
+
+        function moveObject1(event) {
+        var objectRect = object.getBoundingClientRect();
+        var objectCenterX = objectRect.left + objectRect.width / 2;
+        var objectCenterY = objectRect.top + objectRect.height / 2;
+        
+        var mouseX = event.clientX;
+        var mouseY = event.clientY;
+        
+        var distanceX = mouseX - objectCenterX;
+        var distanceY = mouseY - objectCenterY;
+        
+        var moveX = -(distanceX * 0.01); //adjust the movement speed as desired
+        var moveY = -(distanceY * 0.01);
+        
+        object1.style.transform = 'translate(' + moveX + 'px, ' + moveY + 'px)';
+        //object2.style.transform = 'translate(' + moveX + 'px, ' + moveY + 'px)';
+
+        }
+    </script>
+</body>
+</html>

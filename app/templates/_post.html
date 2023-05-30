@@ -1,0 +1,6 @@
+<table>
+    <tr valign="top">
+        <p>{{expense.category}} Posted on: {{ expense.timestamp.strftime('%m/%d/%Y %H:%M') }}</p>
+        <td>${{ "%.2f" % expense.amount }} {{ expense.description }}</td>
+    </tr>
+</table>

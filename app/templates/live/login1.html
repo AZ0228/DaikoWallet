@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="login.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#"><h1 id="logo">name</h1></a>
+            <div>
+                <a href="#" id="join"><span>
+                    <h2 id="signup">back</h2></a>
+                </span>
+            </div>
+        </nav>
+    </header>
+    <div id="page">
+        <form action="" class="login-form">
+            <h1>log in</h1>
+            <div>            
+                <label id="form-label" for="{{form.username.label}}">Username</label>
+                <!--{{ form.username(class="form-control", size=32) }}-->
+                <input type="text", id="form-control">
+                <label id="form-label" for="{{form.username.label}}">Password</label>
+                <!--{{ form.username(class="form-control", size=32) }}-->
+                <input type="text", id="form-control">
+                <a href="#">Forgot Password?</a>
+                <button id="submit">sign in</button>
+            </div>
+        </form>
+        <p id="">Don't have an account?</p>
+        <a href="#"> Create one!</a>
+    </div>
+</body>
+</html>
+
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Sign In</h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}<br>
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}<br>
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+        <p>{{ form.submit() }}</p>
+    </form>
+    <p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>
+{% endblock %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/login.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{{ url_for('index') }}"><h1 id="logo">name</h1></a>
+            <div>
+                <a href="{{ url_for('index') }}" id="join"><span>
+                    <h2 id="signup">back</h2></a>
+                </span>
+            </div>
+        </nav>
+    </header>
+    <div id="page">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+        <form action="" id="login-form", method="post" novalidate>
+            <h1>log in</h1>
+            <div>            
+                <label class="form-label" for="{{ form.username.label }}" >Username</label>
+                {{ form.username(class="form-control", size=32) }}
+                {% for error in form.username.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+    
+                <label class="form-label" for="{{ form.password.label }}">Password</label>
+                {{ form.password(class="form-control", size=32) }}
+                {% for error in form.username.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+    
+                <a href="#">Forgot Password?</a>
+                {{ form.submit(class="submit") }}
+            </div>
+        </form>
+        <p id="">Don't have an account?</p>
+        <a href="{{ url_for('register') }}"> Create one!</a>
+    </div>
+</body>
+</html>
+
+
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Register</h1>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}<br>
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.email.label }}<br>
+            {{ form.email(size=64) }}<br>
+            {% for error in form.email.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}<br>
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.password2.label }}<br>
+            {{ form.password2(size=32) }}<br>
+            {% for error in form.password2.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}

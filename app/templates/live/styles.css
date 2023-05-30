@@ -1,0 +1,239 @@
+:root {
+    --bg-color: #F8F3EF;
+    --bg-color2: #FBFFD0;
+    --secondarycolor: #5F72A5;
+    --text-color: #2D3958;
+    --header-hover:#000;
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('fonts/Satoshi-Black.otf') format('truetype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('fonts/Satoshi-Bold.otf') format('truetype');
+    font-weight: bold;
+}
+
+body{
+    background-color: var(--bg-color);
+    min-height: 100%;
+    margin: 0;
+    font-family: 'Satoshi', sans-serif;
+}
+
+a{
+    text-decoration: none;
+}
+
+body header{
+    height:80px;
+    width:100%;
+    display:flex;
+    align-content: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+    background-color: var(--bg-color);
+}
+
+body header nav{
+    width: 80%;
+    height:100%;
+    font-family: 'Satoshi', sans-serif;
+    display:flex;
+    color: var(--text-color);
+    font-size: 40px;
+    justify-content: space-between;
+    text-align: center;
+    align-items: center;
+}
+
+#center{
+    display:flex;
+    width: min(400px,45%);
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+}
+
+#login{
+    display:flex;
+    width: 200px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: center;
+    align-items: center;
+}
+
+body header nav h1{
+    font-weight:bold;
+    margin: 0;
+    font-size:40px;
+    color: var(--text-color);
+}
+
+body header nav h2{
+    margin:0;
+    font-size: 24px;
+    font-weight:bold;
+    color: var(--text-color);
+}
+
+#signup{
+    /* padding:10px 20px; */
+    color:var(--bg-color);
+    /* background-color: var(--text-color); */
+    /* border-radius: 10px; */
+}
+
+#join {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--text-color);
+    /* font-family: "Lucida Bright"; */
+    box-shadow: 0px 6px 24px 0px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    border: none;
+    font-size: 24px;
+    border-radius: 10px;
+    border:#2D3958 4px solid;
+}
+
+#join:after {
+    content: " ";
+    width: 0%;
+    height: 100%;
+    background: var(--bg-color);
+    position: absolute;
+    transition: all 0.4s ease-in-out;
+    right: 0;
+    border-radius: 8px;
+
+}
+
+#join:hover::after {
+    right: auto;
+    left: 0;
+    border-radius: 1px;
+    width: 100%;
+}
+
+#join span {
+    text-align: center;
+    text-decoration: none;
+    width: 100%;
+    padding: 7px 15px;
+    color: #fff;
+    font-size: 1.125em;
+    font-weight: 700;
+    z-index: 2;
+    transition: all 0.3s ease-in-out;
+    border-radius: 10px;
+}
+
+#join:hover span h2 {
+    transition: all 0.3s ease-in-out;
+
+    color: #2E3034;
+}
+
+#join span:active{
+    transform: scale(0.8);
+}
+
+#hero{
+    min-height: 100vh;
+    display:flex;
+    justify-content: flex-end;
+    /* overflow: hidden; */
+    align-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    /* width: 100%; */
+}
+
+#hero-display{
+    height: 830px;
+    width: 90%;
+    display: flex;
+    justify-content: flex-start;
+    /* margin-left: 700px; */
+    overflow: hidden;
+    margin-top: 65px;
+}
+
+#hero-display section{
+    margin-left:270px;
+    /* overflow: hidden; */
+}
+
+#hero h1{
+    color: var(--text-color);
+    font-size:85px;
+    position: absolute;
+    z-index: 3;
+    width: 370px;
+    line-height: 76px;
+    font-weight: normal;
+    margin-top: 10%;
+}
+
+#about{
+    height: 100vh;
+    background-color: var(--text-color);
+}
+
+#rectangle{
+    position: absolute;
+    z-index: 2;
+    margin-left: 95px;
+    margin-top: 110px;
+    overflow: hidden;
+}
+
+#gradient{
+    height:830px;
+    /* width:1380px; */
+    /* position:absolute; */
+    /* overflow: hidden; */
+}
+
+#hero-text button{
+    font-size: 30px;
+    font-family: 'Satoshi';
+    border: #2D3958 4px solid;
+    border-radius: 10px;
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    margin-top: 50px;
+    padding: 10px 25px;
+}
+
+#hero-text a h2{
+    margin:0;
+    padding:0;
+    line-height: 40px;
+    font-size: 30px;
+}
+
+#hero-text #join{
+    width: 200px;
+    margin-top: 50px;
+    border: var(--text-color) 5px solid;
+}
+
+#try{
+    padding: 5px 5px;
+}
+
