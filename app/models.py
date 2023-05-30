@@ -42,7 +42,7 @@ class User(UserMixin, db.Model):
         self.encrypted_password_hash = generate_password_hash(password)
     
     def check_password(self, password):
-        return check_password_hash(self.ecrypted_password_hash, password)
+        return check_password_hash(self.encrypted_password_hash, password)
     
     def avatar(self, size):
         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
@@ -67,7 +67,7 @@ class User(UserMixin, db.Model):
                     Post.timestamp.desc())
     #-----------------
     def transaction(self):
-        return Post.query.filter_by(user_id=self.id).order_by(Post.timestamp.desc())
+        return Post.query.filter_by(user_id=self.id).order_by(Post.transaction_timestamp.desc())
     
 
     

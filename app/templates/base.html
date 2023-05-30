@@ -1,36 +1,44 @@
-<html>
-    <head>
-        {% if title %}
-        <title>{{ title }}</title>
-        {% else %}
-        <title>Budget Buddy</title>
-        {% endif %}
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
-    </head>
-    </head>
-    <body>
-        <div>
-            Budget Buddy:
-            <a href="{{ url_for('dashboard') }}">Dashboard</a>
-            {% if current_user.is_anonymous %}
-            <a href="{{ url_for('login') }}">Login</a>
-            {% else %}
-            <a href="{{ url_for('user', username=current_user.username) }}">Profile</a>
-            <a href="{{ url_for('logout') }}">Logout</a>
-            {% endif %}
-        </div>
-        <hr>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
-    </body>
-</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if title %}
+    <title>{{ title }}</title>
+    {% else %}
+    <title>Daiko</title>
+    {% endif %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
+</head>
 
-
+<body>
+    <section id="menu">
+        <a id="logo" href="#">daiko</a>
+        <section id="options">
+            <nav>
+                <a href="#" id="chosen"><div class="navElements">
+                    <p>dashboard</p>
+                </div></a>
+                <a href="#"><div class="navElements">
+                    <p>spending</p>
+                </div></a>
+                <a href="#"><div class="navElements">
+                    <p>goals</p>
+                </div></a>
+            </nav>
+            <nav>
+                <a href="#"><div class="navElements">
+                    <p>notifications</p>
+                </div></a>
+                <a href="#"><div class="navElements">
+                    <p>settings</p>
+                </div></a>
+                <a href="{{ url_for('user', username=current_user.username) }}"><div class="navElements">
+                    <p>account</p>
+                </div></a>
+            </nav>
+        </section>
+    </section>
+    <section id="right">{% block content %}{% endblock %}</section>
+</body>
