@@ -95,7 +95,7 @@ def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     expenses = user.transaction().all()
     form = EmptyForm()
-    return render_template('user.html', user=user, expenses = expenses, form = form)
+    return render_template('user.html',title = "User", user=user, expenses = expenses, form = form)
 
 @app.route('/delete_expense/<int:expense_id>', methods=['POST'])
 def delete_expense(expense_id):
@@ -166,4 +166,4 @@ def unfollow(username):
 @app.route('/spending')
 @login_required
 def spending():
-    return render_template('spending.html')
+    return render_template('spending.html',title='spending')

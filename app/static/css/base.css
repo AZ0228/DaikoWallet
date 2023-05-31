@@ -95,7 +95,7 @@ flex-grow: 1;
     letter-spacing: 0.02em;
 }
 
-#chosen{
+.chosen{
     background-color: var(--text-color);
     border-radius:10px;
     color: #fff;
