@@ -14,13 +14,13 @@
 
 <body>
     <section id="menu">
-        <a id="logo" href="#">daiko</a>
+        <a id="logo" href="{{ url_for('index') }}">daiko</a>
         <section id="options">
             <nav>
-                <a href="#" id="chosen"><div class="navElements">
+                <a href="{{ url_for('dashboard') }}" id="chosen"><div class="navElements">
                     <p>dashboard</p>
                 </div></a>
-                <a href="#"><div class="navElements">
+                <a href="{{ url_for('spending') }}"><div class="navElements">
                     <p>spending</p>
                 </div></a>
                 <a href="#"><div class="navElements">

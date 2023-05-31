@@ -41,8 +41,9 @@ def dashboard():
     if form.validate_on_submit():
         amount = float(request.form.get('amount'))
         necessity = bool(request.form.get('necessity'))
-        post = Post(amount=amount,description=form.description.data,
-                     category=form.category.data,necessity=necessity, author=current_user )
+        post = Post(transaction_amount=amount,transaction_descript=form.description.data,
+                     category=form.category.data,necessity=necessity, author=current_user,
+                      transaction_timestamp = datetime.now() )
         db.session.add(post)
         db.session.commit()
         flash('Your expense has been added!', 'success')
@@ -161,3 +162,8 @@ def unfollow(username):
     else:
         return redirect(url_for('index'))
 #===========================================================================================
+
+@app.route('/spending')
+@login_required
+def spending():
+    return render_template('spending.html')
