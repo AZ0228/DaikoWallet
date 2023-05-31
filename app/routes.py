@@ -13,7 +13,7 @@ def get_random_welcome_message(name):
         f"welcome back, {name}!",
         f"hello, {name}! it's great to have you here.",
         f"glad you're here, {name}!",
-        f"hi, {name}! welcome to our platform.",
+        f"welcome, {name}!",
     ]
     return random.choice(welcome_messages)
 
