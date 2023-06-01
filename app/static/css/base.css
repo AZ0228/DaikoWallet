@@ -103,6 +103,7 @@ flex-grow: 1;
 
 #right{
     display:flex;
+    flex-direction: column;
     padding:15px; 
     left:200px;
     position: absolute;
@@ -110,3 +111,4 @@ flex-grow: 1;
     right: 0;
     box-sizing: border-box;
 }
+

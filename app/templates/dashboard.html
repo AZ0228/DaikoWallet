@@ -1,15 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dash.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/post.css') }}">
+
 <section id="dash-left">
 
-    <h1>{{ message }}!</h1>
+    <h1><b>{{ message }}</b></h1>
     {% for expense in expenses %}
         {% include '_post.html' %}
-        <form action="{{ url_for('delete_expense', expense_id=expense.id) }}" method="POST">
-            {{ form.csrf_token }}
-            <button type="submit">Delete</button>
-          </form>
     {% endfor %}
 
 

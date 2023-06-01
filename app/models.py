@@ -83,6 +83,16 @@ class Post(db.Model):
     def __repr__(self):
         return f'<Post {self.body}>'
     
+    def convert_date(self):
+        day = self.transaction_timestamp.day
+        suffix = 'th'
+        if 4 <= day <= 20 or 24 <= day <=30: 
+            pass
+        else:
+            suffixes = ['st', 'nd', 'rd']
+            suffix = suffixes[day % 10 -1]
+        return self.transaction_timestamp.strftime(f'%#I:%M %P %B %d{suffix} %Y')
+    
     # add in option to look at demographics so that users can compare themselves to others
     
 

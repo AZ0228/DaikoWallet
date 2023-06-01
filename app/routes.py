@@ -17,6 +17,16 @@ def get_random_welcome_message(name):
     ]
     return random.choice(welcome_messages)
 
+def convert_date(date):
+    day = date.day
+    suffix = 'th'
+    if 4 <= day <= 20 or 24 <= day <=30: 
+        pass
+    else:
+        suffixes = ['st', 'nd', 'rd']
+        suffix = suffixes[day % 10 -1]
+    return date.strftime(f'%B %d{suffix} %Y %#I:%M %P')
+
 @app.before_request
 def before_request():
     if current_user.is_authenticated:
