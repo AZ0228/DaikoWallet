@@ -16,4 +16,3 @@ __pycache__/
 requirements.txt
 
 # Ignore config file
-config.py

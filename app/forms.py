@@ -61,7 +61,7 @@ class AddTransaction(FlaskForm):
         ('education', 'Education'),
         ('debt_payments', 'Debt Payments'),
         ('savings_investments', 'Savings and Investments'),
-        ('miscellaneous', 'Miscellaneous')
+        ('miscellaneous', 'Miscellaneous') # add other that can be customized by the user
     ], validators=[InputRequired()])
     necessity = SelectField('Necessity', choices=[('True','Needs'),('False','Wants')], validators = [InputRequired()])
     description = StringField('Description')

@@ -16,6 +16,9 @@ table{
     font-size:26px;
     padding: 30px;
     color: var(--secondarycolor);
+    /* width: 120px; */
+    /* display: flex; */
+    justify-content: center;
 }
 
 .top{
@@ -65,4 +68,8 @@ table{
 
 .delete:active{
     scale:0.95;
+}
+
+.amount p{
+    width:65%;
 }

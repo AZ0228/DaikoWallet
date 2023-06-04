@@ -92,7 +92,7 @@ body header{
     top: 0;
     left: 0;
     z-index: 3;
-    background-color: var(--bg-color);
+    /* background-color: var(--bg-color); */
 }
 
 body header nav{
@@ -207,9 +207,10 @@ body header nav h2{
     min-height: 100vh;
     display:flex;
     justify-content: flex-end;
-    /* overflow: hidden; */
+    overflow: hidden;
     align-content: center;
     flex-wrap: wrap;
+    height: 100vh;
     align-items: center;
 }
 
@@ -261,7 +262,7 @@ body header nav h2{
 }
 
 #hero-text{
-    margin-top: 6%;
+    margin-top: max(6%,100px);
     position: absolute;
     z-index: 3;
 }

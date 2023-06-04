@@ -59,7 +59,7 @@ def dashboard():
         flash('Your expense has been added!', 'success')
         return redirect(url_for('dashboard'))
     
-    return render_template('dashboard.html',title = 'Dashboard', 
+    return render_template('dashboard.html',title = 'dashboard', 
                            expenses = expenses, message = message, form=form)
 
 
@@ -78,7 +78,7 @@ def login():
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('dashboard')
         return redirect(next_page)
-    return render_template('login.html', title = 'Sign In', form = form)
+    return render_template('login.html', title = 'sign In', form = form)
 
 @app.route('/logout')
 def logout():
@@ -97,7 +97,7 @@ def register():
         db.session.commit()
         flash('Congratualtions, you are now a registered user!')
         return redirect(url_for('login'))
-    return render_template('register.html', title = 'Register', form = form)
+    return render_template('register.html', title = 'register', form = form)
 
 @app.route('/user/<username>')
 @login_required
@@ -105,7 +105,7 @@ def user(username):
     user = User.query.filter_by(username=username).first_or_404()
     expenses = user.transaction().all()
     form = EmptyForm()
-    return render_template('user.html',title = "User", user=user, expenses = expenses, form = form)
+    return render_template('user.html',title = "user", user=user, expenses = expenses, form = form)
 
 @app.route('/delete_expense/<int:expense_id>', methods=['POST'])
 def delete_expense(expense_id):
