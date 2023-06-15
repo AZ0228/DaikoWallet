@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dash.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/post.css') }}">
+
+<section id="dash-left">
+
+    <h1><b>{{ message }}</b></h1>
+    {% for expense in expenses %}
+        {% include '_post.html' %}
+    {% endfor %}
+
+
+    <h1>Add Transaction</h1>
+    <form method="POST">
+      {{ form.csrf_token }}
+      <div>
+        {{ form.amount.label }}<br>
+        {{ form.amount(size=20) }}<br>
+        {% if form.amount.errors %}
+          <ul class="errors">
+            {% for error in form.amount.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div>
+        {{ form.category.label }}<br>
+        {{ form.category }}<br>
+        {% if form.category.errors %}
+          <ul class="errors">
+            {% for error in form.category.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div>
+        {{ form.necessity.label }}<br>
+        {{ form.necessity }}<br>
+        {% if form.necessity.errors %}
+          <ul class="errors">
+            {% for error in form.necessity.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div>
+        {{ form.description.label }}<br>
+        {{ form.description(size=40) }}<br>
+        {% if form.description.errors %}
+          <ul class="errors">
+            {% for error in form.description.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+      <div>
+        {{ form.submit() }}
+      </div>
+    </form>
+</section>
+
+{% endblock %}

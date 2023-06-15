@@ -1,0 +1,114 @@
+:root {
+    --bg-color: #F8F3EF;
+    --bg-color2: #FBFFD0;
+    --secondarycolor: #5F72A5;
+    --text-color: #2D3958;
+    --header-hover:#000;
+    --highlight: #EA5757
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('Satoshi-Black.otf') format('truetype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Satoshi1';
+    src: url('Satoshi-Medium.otf') format('truetype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Satoshi';
+    src: url('Satoshi-Bold.otf') format('truetype');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'Chillax';
+    src: url('Chillax-Bold.otf') format('truetype');
+    font-weight: normal;
+}
+
+a{
+    text-decoration: none;
+    color:var(--text-color);
+}
+
+body{
+    display: flex;
+    min-height: 100vh;
+    /* grid-template-columns: auto 1fr auto; */
+    flex-direction: row;
+    margin: 0;
+    font-family: 'Satoshi';
+}
+
+#logo{
+    color:var(--highlight);
+    font-family: 'Chillax';
+    font-size: 45px;
+    margin-top: 30px;
+}
+
+#menu{
+    height:100%;
+    width: 200px;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-items: center;
+    left: 0;
+    z-index: 2;
+}
+
+#menu section{
+    
+display: flex;
+    
+flex-direction: column;
+    
+justify-content: space-between;
+    
+flex-grow: 1;
+}
+
+#menu section nav{
+    width: 160px;
+    /* padding: 20px; */
+    font-size: 20px;
+    display: flex;
+    flex-direction: column;
+    margin: 30px 0px;
+}
+
+#menu section nav a{
+    padding-left: 20px;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    letter-spacing: 0.02em;
+}
+
+.chosen{
+    background-color: var(--text-color);
+    border-radius:10px;
+    color: #fff;
+}
+
+#right{
+    display:flex;
+    flex-direction: column;
+    padding:15px; 
+    left:200px;
+    position: absolute;
+    height: 100%;
+    right: 0;
+    box-sizing: border-box;
+}
+
