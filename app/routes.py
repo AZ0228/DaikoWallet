@@ -132,16 +132,20 @@ def delete_expense(expense_id):
 def spending():
     return render_template('spending.html',title='spending')
 
-@app.route('/send_friend_request/<int:user_id>/<int:friend_id>')
+@app.route('/send_friend_request/<int:user_id>/<int:friend_id>', methods=['GET','POST'])
 def send_friend_request(user_id, friend_id):
     friendship = Friendship(user_id=user_id, friend_id=friend_id)
     db.session.add(friendship)
     db.session.commit()
     return 'Friend request sent successfully.'
 
-@app.route('/accept_friend_request/<int:friendship_id>')
-def accept_friend_request(friendship_id):
-    friendship = Friendship.query.get(friendship_id)
+#rewrite this to take both user ids instead
+@app.route('/accept_friend_request/<int:user_id>/<int:friend_id>', methods=['GET','POST'])
+def accept_friend_request(user_id, friend_id):
+    friendship = Friendship.query.filter(
+        (Friendship.user_id == user_id)&(Friendship.friend_id == friend_id) |
+        (Friendship.user_id == friend_id)&(Friendship.friend_id == user_id)
+        ).first()
     if friendship:
         friendship.status = 'accepted'
         db.session.commit()
@@ -149,8 +153,10 @@ def accept_friend_request(friendship_id):
     return 'Friend request not found.'
 
 # needs implementation
-@app.route('/unfriend/<int:friendship_id>')
+@app.route('/unfriend/')
 def unfriend():
     return 'Friend request not found.'
 
-
+@app.route('/user/settings')
+def settings():
+    return 'hello'

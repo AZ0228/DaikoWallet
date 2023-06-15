@@ -4,6 +4,7 @@ table{
     border-radius: 15px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     margin:20px 0px;
+    color: var(--text-color);
 }
 
 .category{
@@ -32,6 +33,7 @@ table{
 
 .time{
     font-size:14px;
+    margin: 0;
 }
 
 .description{
@@ -42,6 +44,7 @@ table{
 
 .label{
     flex-grow: 1;
+    color: var(--text-color);
 }
 
 .delete{

@@ -74,8 +74,10 @@ class User(UserMixin, db.Model):
             (Friendship.user_id == other_user.id)&(Friendship.friend_id == self.id)
             ).first()
         if friendship is not None:
-            if friendship.status == 'pending' and friendship.user_id == self.id:
+            # current user sent friend request, still pending
+            if friendship.status == 'pending' and friendship.user_id == self.id: 
                 return 1
+            # friend request is being sent to current user
             elif friendship.status == 'pending' and friendship.friend_id == self.id:
                 return 2
             else:

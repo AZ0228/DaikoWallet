@@ -10,6 +10,7 @@
                 {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
                 {% if user.last_seen %}<p>Last seen on: {{ user.last_seen }}</p>{% endif %}
                 {% if user == current_user %}
+<<<<<<< HEAD
                 <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
 <<<<<<< HEAD
                 {% elif not current_user.is_following(user) %}
@@ -19,11 +20,29 @@
                         {{ form.submit(value='Follow') }}
 =======
                 {% elif current_user.friends_status(user) == 1 %}
+=======
+                <p><a href="{{ url_for('settings') }}">Edit your settings</a></p>
+                {% elif current_user.friends_status(user) == 0 %}
+>>>>>>> 4a0f2b1 (friends)
                 <p>
                     <form action="{{ url_for('send_friend_request', user_id=current_user.id, friend_id=user.id ) }}" method="post">
                         {{ form.hidden_tag() }}
                         {{ form.submit(value='send friend request') }}
 >>>>>>> 2298483 (added gct)
+                    </form>
+                </p>
+                {% elif current_user.friends_status(user) == 1 %}
+                <p>
+                    <form action="{{ url_for('unfriend')}}" method="post">
+                        {{ form.hidden_tag() }}
+                        {{ form.submit(value='request pending') }}
+                    </form>
+                </p>
+                {% elif current_user.friends_status(user) == 2 %}
+                <p>
+                    <form action="{{ url_for('accept_friend_request', user_id=current_user.id, friend_id=user.id)}}" method="post">
+                        {{ form.hidden_tag() }}
+                        {{ form.submit(value='accept') }}
                     </form>
                 </p>
                 {% else %}
@@ -35,8 +54,12 @@
 =======
                     <form action="{{ url_for('unfriend')}}" method="post">
                         {{ form.hidden_tag() }}
+<<<<<<< HEAD
                         {{ form.submit(value='Unfriend') }}
 >>>>>>> 2298483 (added gct)
+=======
+                        {{ form.submit(value='unfriend') }}
+>>>>>>> 4a0f2b1 (friends)
                     </form>
                 </p>
                 {% endif %}
