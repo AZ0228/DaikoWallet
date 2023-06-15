@@ -10,58 +10,36 @@
                 {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
                 {% if user.last_seen %}<p>Last seen on: {{ user.last_seen }}</p>{% endif %}
                 {% if user == current_user %}
-<<<<<<< HEAD
-                <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
-<<<<<<< HEAD
-                {% elif not current_user.is_following(user) %}
-                <p>
-                    <form action="{{ url_for('follow', username=user.username) }}" method="post">
-                        {{ form.hidden_tag() }}
-                        {{ form.submit(value='Follow') }}
-=======
-                {% elif current_user.friends_status(user) == 1 %}
-=======
-                <p><a href="{{ url_for('settings') }}">Edit your settings</a></p>
+                <p><a href="{{ url_for('settings') }}">edit settings</a></p>
                 {% elif current_user.friends_status(user) == 0 %}
->>>>>>> 4a0f2b1 (friends)
                 <p>
                     <form action="{{ url_for('send_friend_request', user_id=current_user.id, friend_id=user.id ) }}" method="post">
                         {{ form.hidden_tag() }}
                         {{ form.submit(value='send friend request') }}
->>>>>>> 2298483 (added gct)
                     </form>
                 </p>
                 {% elif current_user.friends_status(user) == 1 %}
                 <p>
-                    <form action="{{ url_for('unfriend')}}" method="post">
+                    <form action="{{ url_for('accept_friend_request', user_id=current_user.id, friend_id=user.id ) }}" method="post">
                         {{ form.hidden_tag() }}
-                        {{ form.submit(value='request pending') }}
+                        {{ form.submit(value='accept friend request') }}
                     </form>
                 </p>
                 {% elif current_user.friends_status(user) == 2 %}
                 <p>
-                    <form action="{{ url_for('accept_friend_request', user_id=current_user.id, friend_id=user.id)}}" method="post">
+                    <form action="{{ url_for('unfriend')}}" method="post">
                         {{ form.hidden_tag() }}
-                        {{ form.submit(value='accept') }}
+                        {{ form.submit(value='requested') }}
                     </form>
                 </p>
                 {% else %}
                 <p>
-<<<<<<< HEAD
-                    <form action="{{ url_for('unfollow', username=user.username) }}" method="post">
-                        {{ form.hidden_tag() }}
-                        {{ form.submit(value='Unfollow') }}
-=======
                     <form action="{{ url_for('unfriend')}}" method="post">
                         {{ form.hidden_tag() }}
-<<<<<<< HEAD
-                        {{ form.submit(value='Unfriend') }}
->>>>>>> 2298483 (added gct)
-=======
                         {{ form.submit(value='unfriend') }}
->>>>>>> 4a0f2b1 (friends)
                     </form>
                 </p>
+
                 {% endif %}
             </td>
         </tr>
