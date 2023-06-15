@@ -1,3 +1,6 @@
+'''
+models file, schema of the databases is stored/created through this file
+'''
 from datetime import datetime
 from app import db
 from werkzeug.security import generate_password_hash, check_password_hash #in the future put safeguards for security
@@ -9,29 +12,19 @@ from hashlib import md5
 def load_user(id):
     return User.query.get(int(id))
 
-followers = db.Table('followers',
-    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
-    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
-)
-
-#remove
-
 class User(UserMixin, db.Model):
     id= db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64),index=True, unique = True)
     email = db.Column(db.String(120),index=True, unique = True)
     encrypted_password_hash = db.Column(db.String(128)) #encrypted password
-    posts = db.relationship('Post', backref='author', lazy = 'dynamic')
     about_me = db.Column(db.String(140))
-    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
-    # take this out^^
-    followed = db.relationship(
-        'User', secondary=followers, 
-        primaryjoin=(followers.c.follower_id == id),
-        secondaryjoin = (followers.c.followed_id == id),
-        backref=db.backref('followers', lazy='dynamic'), lazy='dynamic'
+    posts = db.relationship('Post', backref='author', lazy = 'dynamic')
+    #friendships = db.relationship('Friendship', backref='user', lazy=True)
+    friendships = db.relationship(
+        'Friendship',
+        primaryjoin="or_(User.id == Friendship.user_id, User.id == Friendship.friend_id)",
+        viewonly=True
     )
-    
     #add user details include demographics
     #monthly income and job and job description
 
@@ -49,6 +42,7 @@ class User(UserMixin, db.Model):
         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
             digest, size)
     #----- dont need this
+    '''
     def is_following(self,user):
         return self.followed.filter(followers.c.followed_id==user.id).count()>0
     
@@ -65,7 +59,30 @@ class User(UserMixin, db.Model):
             followers, (followers.c.followed_id == Post.user_id)).filter(
                 followers.c.follower_id == self.id).order_by(
                     Post.timestamp.desc())
+    '''
     #-----------------
+
+    def is_friends(self, other_user):
+        return Friendship.query.filter(
+            (Friendship.user_id == self.id) & (Friendship.friend_id == other_user.id) |
+            (Friendship.user_id == other_user.id) & (Friendship.friend_id == self.id)
+        ).count() > 0
+    
+    def friends_status(self, other_user):
+        friendship = Friendship.query.filter(
+            (Friendship.user_id == self.id)&(Friendship.friend_id == other_user.id) |
+            (Friendship.user_id == other_user.id)&(Friendship.friend_id == self.id)
+            ).first()
+        if friendship is not None:
+            if friendship.status == 'pending' and friendship.user_id == self.id:
+                return 1
+            elif friendship.status == 'pending' and friendship.friend_id == self.id:
+                return 2
+            else:
+                return 3
+        else:
+            return 0
+
     def transaction(self):
         return Post.query.filter_by(user_id=self.id).order_by(Post.transaction_timestamp.desc())
     
@@ -95,4 +112,9 @@ class Post(db.Model):
     
     # add in option to look at demographics so that users can compare themselves to others
     
+class Friendship(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
+    friend_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
+    status = db.Column(db.String(20), nullable = False, default='pending')
 

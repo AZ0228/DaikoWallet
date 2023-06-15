@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+=======
+'''
+init file, initiates the flask app, the SQL database, the migration files,
+and the login manager (keeps track of current logged in user through their 
+session ID)
+'''
+
+>>>>>>> 2298483 (added gct)
 from flask import Flask
 from .config import Config
 from flask_sqlalchemy import SQLAlchemy
@@ -17,6 +26,10 @@ login.login_view = 'login'
 
 from app import routes, models, errors
 
+<<<<<<< HEAD
+=======
+# gmail authentication component
+>>>>>>> 2298483 (added gct)
 if not app.debug:
     if app.config['MAIL_SERVER']:
         auth = None

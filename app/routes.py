@@ -1,12 +1,17 @@
+'''
+routing file, manages all routes between pages/actions and database
+'''
+
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, AddTransaction
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, Post
+from app.models import User, Post, Friendship
 from werkzeug.urls import url_parse
 from datetime import datetime
 import random
 
+# function to get a random dashboard welcome message, feel free to adjust
 def get_random_welcome_message(name):
     welcome_messages = [
         f"nice to see you, {name}!",
@@ -17,6 +22,7 @@ def get_random_welcome_message(name):
     ]
     return random.choice(welcome_messages)
 
+# function to get the right date suffix Ex: june 2nd / june 4th
 def convert_date(date):
     day = date.day
     suffix = 'th'
@@ -27,84 +33,89 @@ def convert_date(date):
         suffix = suffixes[day % 10 -1]
     return date.strftime(f'%B %d{suffix} %Y %#I:%M %P')
 
-@app.before_request
-def before_request():
-    if current_user.is_authenticated:
-        current_user.last_seen = datetime.utcnow()
-        db.session.commit()
-
+# route for the landing page
 @app.route('/')
 @app.route('/index')
 def index():
     return render_template('index.html',title='Budget Buddy')
 
+# route for the dashboard, methods include getting and posting data
 @app.route('/dashboard', methods=['GET','POST'])
 @login_required
 def dashboard():
-    expenses = [
-        {'type': {'price': "5.75"}, 'body': 'grocery store'},
-        {'type': {'price': "6.00"}, 'body': 'thrift store'},
-    ]
-    expenses = current_user.transaction().all()
+    expenses = current_user.transaction().all() # queries all user's transactions, see models.py for clarification
     message = get_random_welcome_message(current_user.username)
-    form = AddTransaction()
-    if form.validate_on_submit():
-        amount = float(request.form.get('amount'))
+    form = AddTransaction() # add transaction form on the dashboard page, temporary just to test function, before spending page is designed
+    if form.validate_on_submit(): 
+        # need to replace this method with AJAX/server side processing so that there does not need to be a redirect-
+        # every time transaction is changed/deleted
+        # below is getting and setting form data
+        amount = float(request.form.get('amount')) 
         necessity = bool(request.form.get('necessity'))
         post = Post(transaction_amount=amount,transaction_descript=form.description.data,
                      category=form.category.data,necessity=necessity, author=current_user,
-                      transaction_timestamp = datetime.now() )
+                      transaction_timestamp = datetime.now() ) # creating a post with the queried data
+        # adding and committing to database
         db.session.add(post)
         db.session.commit()
-        flash('Your expense has been added!', 'success')
+        flash('Your expense has been added!', 'success') 
         return redirect(url_for('dashboard'))
-    
+    # passes expenses, random message, and add transaction form
     return render_template('dashboard.html',title = 'dashboard', 
                            expenses = expenses, message = message, form=form)
 
 
+# login route, methods include getting and posting data
 @app.route('/login', methods=['GET','POST'])
 def login():
+    # if user is logged in already, redirect to dashboard
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
     form = LoginForm()
     if form.validate_on_submit():
+        # query form data
         user = User.query.filter_by(username=form.username.data).first()
-        if user is None or not user.check_password(form.password.data):
+        if user is None or not user.check_password(form.password.data): # validates password, check models.py for more
             flash('Invalid username or password')
             return redirect(url_for('login'))
-        login_user(user, remember=form.remember_me.data)
-        next_page = request.args.get('next')
+        login_user(user, remember=form.remember_me.data) # login function from flask_login library
+        next_page = request.args.get('next') # used in case user was redirected from some login-only feature
         if not next_page or url_parse(next_page).netloc != '':
-            next_page = url_for('dashboard')
+            next_page = url_for('dashboard') #if no redirect, load the dashboard
         return redirect(next_page)
     return render_template('login.html', title = 'sign In', form = form)
 
+# simple logout route using flask_login library
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
 
+# register form, methods include getting and posting data
 @app.route('/register', methods=['GET','POST'])
 def register():
-    if current_user.is_authenticated:
+    if current_user.is_authenticated: #redirects to dashboard if already logged in
         return redirect(url_for('dashboard'))
     form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data)
+    if form.validate_on_submit(): # user id and email is validated (no duplicates) in forms.py
+        user = User(username=form.username.data, email=form.email.data) # creates new user object
         user.set_password(form.password.data)
-        db.session.add(user)
+        db.session.add(user) # updates database
         db.session.commit()
         flash('Congratualtions, you are now a registered user!')
         return redirect(url_for('login'))
     return render_template('register.html', title = 'register', form = form)
 
+# user profile page, might not be needed
 @app.route('/user/<username>')
 @login_required
 def user(username):
     user = User.query.filter_by(username=username).first_or_404()
+    #passes in all of user's transactions, here for debugging purpose, enables anybody to see anybody else's full transaction history
+    #------- remove later ----------------------------
     expenses = user.transaction().all()
-    form = EmptyForm()
+    #-------------------------------------------------
+    form = EmptyForm() #follow form, change to friend form
     return render_template('user.html',title = "user", user=user, expenses = expenses, form = form)
 
 @app.route('/delete_expense/<int:expense_id>', methods=['POST'])
@@ -116,64 +127,30 @@ def delete_expense(expense_id):
     return redirect(url_for('dashboard'))
 
 
-
-#================================ probably won't need this =================================
-
-@app.route('/edit_profile', methods=['GET', 'POST'])
-@login_required
-def edit_profile():
-    form = EditProfileForm(current_user.username)
-    if form.validate_on_submit():
-        current_user.username = form.username.data
-        current_user.about_me = form.about_me.data
-        db.session.commit()
-        flash('Your changes have been saved.')
-        return redirect(url_for('edit_profile'))
-    elif request.method == 'GET':
-        form.username.data = current_user.username
-        form.about_me.data = current_user.about_me
-    return render_template('edit_profile.html', title='Edit Profile',form=form)
-
-@app.route('/follow/<username>', methods=['POST'])
-@login_required
-def follow(username):
-    form = EmptyForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=username).first()
-        if user is None:
-            flash('User {} not found.'.format(username))
-            return redirect(url_for('index'))
-        if user == current_user:
-            flash('You cannot follow yourself!')
-            return redirect(url_for('user', username=username))
-        current_user.follow(user)
-        db.session.commit()
-        flash('You are following {}!'.format(username))
-        return redirect(url_for('user', username=username))
-    else:
-        return redirect(url_for('index'))
-
-@app.route('/unfollow/<username>', methods=['POST'])
-@login_required
-def unfollow(username):
-    form = EmptyForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=username).first()
-        if user is None:
-            flash('User {} not found.'.format(username))
-            return redirect(url_for('index'))
-        if user == current_user:
-            flash('You cannot unfollow yourself!')
-            return redirect(url_for('user', username=username))
-        current_user.unfollow(user)
-        db.session.commit()
-        flash('You are not following {}.'.format(username))
-        return redirect(url_for('user', username=username))
-    else:
-        return redirect(url_for('index'))
-#===========================================================================================
-
 @app.route('/spending')
 @login_required
 def spending():
     return render_template('spending.html',title='spending')
+
+@app.route('/send_friend_request/<int:user_id>/<int:friend_id>')
+def send_friend_request(user_id, friend_id):
+    friendship = Friendship(user_id=user_id, friend_id=friend_id)
+    db.session.add(friendship)
+    db.session.commit()
+    return 'Friend request sent successfully.'
+
+@app.route('/accept_friend_request/<int:friendship_id>')
+def accept_friend_request(friendship_id):
+    friendship = Friendship.query.get(friendship_id)
+    if friendship:
+        friendship.status = 'accepted'
+        db.session.commit()
+        return 'Friend request accepted successfully.'
+    return 'Friend request not found.'
+
+# needs implementation
+@app.route('/unfriend/<int:friendship_id>')
+def unfriend():
+    return 'Friend request not found.'
+
+

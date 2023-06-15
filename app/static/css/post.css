@@ -62,7 +62,7 @@ table{
 }
 
 .delete:hover{
-    background-color: var(--bg-color);
+    background-color:#fff;
     color:var(--highlight);
 }
 

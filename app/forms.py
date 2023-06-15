@@ -1,3 +1,7 @@
+'''
+forms file, manages front end form templating and their connection to the backend
+'''
+
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length, InputRequired
@@ -18,7 +22,6 @@ class RegistrationForm(FlaskForm):
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     '''
     submit = SubmitField('Register')
-    
 
     def validate_username(self,username):
         user = User.query.filter_by(username=username.data).first()
