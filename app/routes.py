@@ -137,7 +137,8 @@ def send_friend_request(user_id, friend_id):
     friendship = Friendship(user_id=user_id, friend_id=friend_id)
     db.session.add(friendship)
     db.session.commit()
-    return 'Friend request sent successfully.'
+    friend = User.query.filter_by(id=friend_id).first()
+    return redirect(url_for('user',username = friend.username ))
 
 #rewrite this to take both user ids instead
 @app.route('/accept_friend_request/<int:user_id>/<int:friend_id>', methods=['GET','POST'])
@@ -147,14 +148,25 @@ def accept_friend_request(user_id, friend_id):
         (Friendship.user_id == friend_id)&(Friendship.friend_id == user_id)
         ).first()
     if friendship:
+        friend = User.query.filter_by(id=friend_id).first()
         friendship.status = 'accepted'
         db.session.commit()
-        return 'Friend request accepted successfully.'
+        return redirect(url_for('user',username = friend.username ))
+        #'Friend request accepted successfully.'
     return 'Friend request not found.'
 
 # needs implementation
-@app.route('/unfriend/')
-def unfriend():
+@app.route('/unfriend/<int:user_id>/<int:friend_id>', methods=['GET','POST'])
+def unfriend(user_id, friend_id):
+    friendship = Friendship.query.filter(
+        (Friendship.user_id == user_id)&(Friendship.friend_id == friend_id) |
+        (Friendship.user_id == friend_id)&(Friendship.friend_id == user_id)
+        ).first()
+    if friendship:
+        friend = User.query.filter_by(id=friend_id).first()
+        db.session.delete(friendship)
+        db.session.commit()
+        return redirect(url_for('user',username = friend.username ))
     return 'Friend request not found.'
 
 @app.route('/user/settings')

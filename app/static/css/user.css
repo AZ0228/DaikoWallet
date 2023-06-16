@@ -1,0 +1,25 @@
+h1{
+    font-size:32px;
+    font-weight: normal;
+}
+.user a{
+    color:white;
+}
+.user{
+    background-color: var(--secondarycolor);
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 15px;
+    display: flex;
+    color: white;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.profile{
+    /* display:flex; */
+    width: 100%;
+}
+
+.user img{
+    border-radius: 8px;
+}

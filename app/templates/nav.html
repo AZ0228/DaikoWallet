@@ -1,0 +1,36 @@
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="shortcut icon" type="image/png" href="{{url_for('static',filename='images/d.svg')}}"/>
+</head>
+    
+    <section id="menu">
+        <a id="logo" href="{{ url_for('index') }}">daiko</a>
+        <section id="options">
+            <nav>
+                <a href="{{ url_for('dashboard') }}" id="1" class="" ><div class="navElements">
+                    <p>dashboard</p>
+                </div></a>
+                <a href="{{ url_for('spending') }}" id="2" class=""><div class="navElements">
+                    <p>spending</p>
+                </div></a>
+                <a href="#" id="3" class=""><div class="navElements">
+                    <p>goals</p>
+                </div></a>
+            </nav>
+            <nav>
+                <a href="#" id="4" class=""><div class="navElements">
+                    <p>notifications</p>
+                </div></a>
+                <a href="#" id="5" class=""><div class="navElements">
+                    <p>settings</p>
+                </div></a>
+                <a id="6" class="" href="{{ url_for('user', username=current_user.username) }}"><div class="navElements">
+                    <p>account</p>
+                </div></a>
+                <a id="7" class="" href="{{ url_for('logout') }}"><div class="navElements">
+                    <p>logout</p>
+                </div></a>
+            </nav>
+        </section>
+    </section>
+    <script src="{{url_for('static', filename = 'js/dash.js')}}"></script>
