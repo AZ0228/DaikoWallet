@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 <link rel="stylesheet" href="{{url_for('static',filename='css/spending.css')}}">
+<link rel="stylesheet" href="{{url_for('static',filename='css/post.css')}}">
 <div id="main">
-
+    <h1><b>notifications</b></h1>
+    {% for notification in notifications %}
+        {% include '_notification.html' %}
+    {% endfor %}
 </div>
 {% endblock %}

@@ -1,0 +1,17 @@
+<table>
+    <tr valign="top" class="top">
+        <td class="img">
+            <img src="{{ notification.getOtherUser().first().avatar(50) }}" alt="">
+        </td>
+        <td class="label notif">
+            <h2 class="category">{{ notification. message }}</h2>
+            <p class="time">{{ notification.convert_date()}}</p>
+        </td>
+        <td>
+            <form action="{{ url_for('dashboard') }}" method="POST">
+                <button type="submit" class="delete">delete</button>
+            </form>
+        
+        </td>
+    </tr>    
+</table>

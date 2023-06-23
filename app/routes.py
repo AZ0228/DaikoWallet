@@ -6,7 +6,7 @@ from flask import render_template, flash, redirect, url_for, request
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, EmptyForm, AddTransaction
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User, Post, Friendship
+from app.models import User, Post, Friendship, Notification
 from werkzeug.urls import url_parse
 from datetime import datetime
 import random
@@ -126,15 +126,18 @@ def delete_expense(expense_id):
     flash('post has been deleted')
     return redirect(url_for('dashboard'))
 
-
 @app.route('/spending')
 @login_required
 def spending():
-    return render_template('spending.html',title='spending')
+    expenses = current_user.transaction().all()
+    return render_template('spending.html',title='spending', expenses = expenses)
 
 @app.route('/send_friend_request/<int:user_id>/<int:friend_id>', methods=['GET','POST'])
 def send_friend_request(user_id, friend_id):
+    friend = User.query.filter_by(id=friend_id).first()
     friendship = Friendship(user_id=user_id, friend_id=friend_id)
+    notification = Notification(user_id=friend_id,timestamp=datetime.now(), message=f'{current_user.username} sent you a friend request',other_user = current_user.username)
+    db.session.add(notification)
     db.session.add(friendship)
     db.session.commit()
     friend = User.query.filter_by(id=friend_id).first()
@@ -172,3 +175,11 @@ def unfriend(user_id, friend_id):
 @app.route('/user/settings')
 def settings():
     return 'hello'
+
+
+@app.route('/notifications', methods=['GET','POST'])
+@login_required
+def notifications():
+    notifications = current_user.notif().all()
+    return render_template('notifications.html',title='notifications',notifications = notifications)
+

@@ -74,3 +74,28 @@ table{
 .amount p{
     width:65%;
 }
+
+.notif{
+    padding:30px;
+}
+
+.img{
+    box-sizing: border-box;
+    margin:20px;
+    margin-right:0;
+    display: flex;
+}
+
+.img img{
+    border-radius: 7px;
+}
+h1{
+    margin:0;
+    font-size:32px;
+    font-weight: bold;
+    /* font-family: 'Satoshi'; */
+}
+
+b{
+    font-weight:normal;
+}

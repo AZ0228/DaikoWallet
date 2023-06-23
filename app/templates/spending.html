@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 <link rel="stylesheet" href="{{url_for('static',filename='css/spending.css')}}">
+<link rel="stylesheet" href="{{url_for('static',filename='css/post.css')}}">
 <div id="main">
-
+    {% for expense in expenses %}
+        {% include '_post.html' %}
+    {% endfor %}
 </div>
 {% endblock %}

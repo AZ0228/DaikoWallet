@@ -21,6 +21,7 @@ class User(UserMixin, db.Model):
     encrypted_password_hash = db.Column(db.String(128)) # encrypted password
     about_me = db.Column(db.String(140))
     posts = db.relationship('Post', backref='author', lazy = 'dynamic')
+    notifs = db.relationship('Notification', backref='author', lazy='dynamic')
     # defining relationship between friendships and users, join conditions
     friendships = db.relationship(
         'Friendship',
@@ -64,6 +65,9 @@ class User(UserMixin, db.Model):
     def transaction(self):
         return Post.query.filter_by(user_id=self.id).order_by(Post.transaction_timestamp.desc())
     
+    def notif(self):
+        return Notification.query.filter_by(user_id=self.id).order_by(Notification.timestamp.desc())
+    
 
     
 class Post(db.Model):
@@ -95,4 +99,24 @@ class Friendship(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
     friend_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable = False)
     status = db.Column(db.String(20), nullable = False, default='pending')
+
+class Notification(db.Model):
+    id = db.Column(db.Integer,primary_key=True) 
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),nullable=False)
+    message =  db.Column(db.String(50),nullable=False) #notification message
+    timestamp = db.Column(db.DateTime,index=True, default = datetime.utcnow)
+    other_user = db.Column(db.String(30), nullable=True)
+
+    def getOtherUser(self):
+        return User.query.filter_by(username = self.other_user)
+
+    def convert_date(self):
+        day = self.timestamp.day
+        suffix = 'th'
+        if 4 <= day <= 20 or 24 <= day <=30: 
+            pass
+        else:
+            suffixes = ['st', 'nd', 'rd']
+            suffix = suffixes[day % 10 -1]
+        return self.timestamp.strftime(f'%#I:%M %P %B %d{suffix} %Y')
 
